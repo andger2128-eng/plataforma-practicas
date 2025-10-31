@@ -2,18 +2,25 @@
   publish = "dist"
   command = "npm run build"
 
-# Configuración para despliegues automáticos de pull requests
+[build.environment]
+  NODE_VERSION = "16"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Configuración para producción
+[context.production]
+  command = "npm run build"
+  environment = { VITE_API_URL = "https://api.tuapp.com", VITE_ENV = "production" }
+
+# Configuración para vistas previas de pull requests
 [context.deploy-preview]
   command = "npm run build"
+  environment = { VITE_API_URL = "https://api-staging.tuapp.com", VITE_ENV = "staging" }
 
-# Configuración para ramas específicas
+# Configuración para la rama develop
 [context.branch-deploy]
   command = "npm run build"
-  environment = { NODE_VERSION = "16" }
-
-# Variables de entorno para diferentes contextos
-[context.production.environment]
-  VITE_API_URL = "https://api.tuapp.com"
-
-[context.deploy-preview.environment]
-  VITE_API_URL = "https://api-staging.tuapp.com"
+  environment = { VITE_API_URL = "https://api-branch.tuapp.com", VITE_ENV = "branch" }
